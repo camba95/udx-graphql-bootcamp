@@ -34,6 +34,32 @@ const Mutation = {
 
     return deletedUser;
   },
+  updateUser(parent, args, { db }, info) {
+    let { users } = db;
+    const { id, data } = args;
+    const user = users.find((user) => user.id === id);
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    if (typeof data.email === "string") {
+      const emailTaken = users.some((user) => user.email === data.email);
+      if (emailTaken) {
+        throw new Error("Email taken.");
+      }
+      user.email = data.email;
+    }
+
+    if (typeof data.name === "string") {
+      user.name = data.name;
+    }
+
+    if (typeof data.age !== "undefined") {
+      user.age = data.age;
+    }
+
+    return user;
+  },
   createPost(parent, args, { db }, info) {
     const { data } = args;
     const { users, posts } = db
@@ -60,6 +86,28 @@ const Mutation = {
     comments = comments.filter((comment) => comment.post !== args.id);
 
     return deletedPost;
+  },
+  updatePost(parent, args, { db }, info) {
+    let { posts } = db;
+    const { id, data } = args;
+    const post = posts.find((post) => post.id === id);
+    if (!post) {
+      throw new Error("Post not found.");
+    }
+
+    if (typeof data.title === "string") {
+      post.title = data.title;
+    }
+
+    if (typeof data.body === "string") {
+      post.body = data.body;
+    }
+
+    if (typeof data.published === "boolean") {
+      post.published = data.published;
+    }
+
+    return post;
   },
   createComment(parent, args, { db }, info) {
     const { users, posts, comments } = db
@@ -89,6 +137,20 @@ const Mutation = {
     const [deletedComment] = comments.splice(commentIndex, 1);
 
     return deletedComment;
+  },
+  updateComment(parent, args, { db }, info) {
+    let { comments } = db;
+    const { id, data } = args;
+    const comment = comments.find((comment) => comment.id === id);
+    if (!comment) {
+      throw new Error("Comment not found.");
+    }
+
+    if (typeof data.text === "string") {
+      comment.text = data.text;
+    }
+
+    return comment;
   },
 };
 
