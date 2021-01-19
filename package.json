@@ -19,8 +19,10 @@
   "homepage": "https://github.com/camba95/udx-graphql-bootcamp#readme",
   "dependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "graphql-yoga": "^1.14.10"
+    "graphql-yoga": "^1.14.10",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

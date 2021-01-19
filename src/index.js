@@ -1,4 +1,5 @@
 import { GraphQLServer } from "graphql-yoga";
+import uuidv4 from "uuid/v4";
 
 // Scalar types: String, Boolean, Int, Float, ID
 
@@ -107,6 +108,31 @@ const typeDefs = `
     author: User!
     post: Post!
   }
+
+  type Mutation {
+    createUser(data: CreateUserInput!): User!
+    createPost(data: CreatePostInput!): Post!
+    createComment(data: CreateCommentInput!): Comment!
+  }
+
+  input CreateUserInput {
+    name: String!
+    email: String!
+    age: Int
+  }
+
+  input CreatePostInput {
+    title: String!
+    body: String!
+    published: Boolean!
+    author: ID!
+  }
+
+  input CreateCommentInput {
+    text: String!
+    author: ID!
+    post: ID!
+  }
 `;
 
 const resolvers = {
@@ -161,6 +187,52 @@ const resolvers = {
       return comments.filter((comment) => comment.author === parent.id);
     },
   },
+  Mutation: {
+    createUser(parent, args) {
+      const { data } = args;
+      const emailTaken = users.some((user) => user.email === data.email);
+      if (emailTaken) {
+        throw new Error("Email taken.");
+      }
+      const user = {
+        id: uuidv4(),
+        ...data
+      };
+      users.push(user);
+      return user;
+    },
+    createPost(parent, args) {
+      const { data } = args;
+      const userExists = users.some((user) => user.id === data.author);
+      if (!userExists) {
+        throw new Error("User not found.");
+      }
+      const post = {
+        id: uuidv4(),
+        ...data
+
+      };
+      posts.push(post);
+      return post;
+    },
+    createComment(parent, args) {
+      const { data } = args;
+      const userExists = users.some((user) => user.id === data.author);
+      const postExists = posts.some((post) => post.id === data.post && post.published);
+      if (!userExists) {
+        throw new Error("User not found.");
+      }
+      if (!postExists) {
+        throw new Error("Post not found.");
+      }
+      const comment = {
+        id: uuidv4(),
+        ...data
+      };
+      comments.push(comment);
+      return comment;
+    },
+  }
 };
 
 const server = new GraphQLServer({ typeDefs, resolvers });
