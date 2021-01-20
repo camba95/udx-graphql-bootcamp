@@ -79,6 +79,16 @@ input UpdateCommnentInput {
 }
 
 type Subscription {
-  comment(postId: ID!): Comment!
-  post: Post!
+  comment(postId: ID!): CommentSubscriptionPayload!
+  post: PostSubscriptionPayload!
+}
+
+type PostSubscriptionPayload {
+  mutation: String!
+  data: Post!
+}
+
+type CommentSubscriptionPayload {
+  mutation: String!
+  data: Comment!
 }
