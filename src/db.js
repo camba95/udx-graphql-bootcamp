@@ -38,7 +38,7 @@ const posts = [
     id: "fake-post-id-02",
     title: "React.js Bootcamp",
     body: "UI library for SPA",
-    published: true,
+    published: false,
     author: "fake-user-id-02",
   },
 ];

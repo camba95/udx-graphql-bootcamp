@@ -77,3 +77,8 @@ input UpdatePostInput {
 input UpdateCommnentInput {
   text: String
 }
+
+type Subscription {
+  comment(postId: ID!): Comment!
+  post: Post!
+}
