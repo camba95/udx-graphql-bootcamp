@@ -10,15 +10,12 @@ const User = {
   // },
   email: {
     fragment: "fragment userId on User { id }",
-    resolve: async (parent, args, { prisma, request }, info) => {
-      return prisma.query.posts({
-        where: {
-          published: true,
-          author: {
-            id: parent.id
-          }
-        }
-      }, info);
+    resolve: async (parent, args, { request }, info) => {
+      const userId = getUserId(request, false);
+      if (userId && userId === parent.id) {
+        return parent.email;
+      }
+      return null;
     }
   },
   posts: {
@@ -30,7 +27,10 @@ const User = {
       }
       return prisma.query.posts({
         where: {
-          published: true
+          published: true,
+          author: {
+            id: parent.id
+          }
         }
       }, info);
     }
