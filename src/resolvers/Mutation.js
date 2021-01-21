@@ -112,13 +112,35 @@ const Mutation = {
       throw new Error("Unable to update post.");
     }
 
+    const isPublished = await prisma.exists.Post({
+      id,
+      published: true
+    });
+
+    if (isPublished && data.published === false) {
+      await prisma.mutation.deleteManyComments({
+        where: {
+          post: { id }
+        }
+      }, info);
+    }
+
     return prisma.mutation.updatePost({
       where: { id },
       data
     }, info);
   },
-  createComment(parent, { data }, { prisma, request }, info) {
+  createComment: async (parent, { data }, { prisma, request }, info) => {
     const userId = getUserId(request);
+    const postExists = await prisma.exists.Post({
+      id: data.post,
+      published: true
+    })
+
+    if (!postExists) {
+      throw new Error("Post not found.");
+    }
+
     return prisma.mutation.createComment({
       data: {
         text: data.text,
