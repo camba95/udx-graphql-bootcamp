@@ -20,10 +20,13 @@ const server = new GraphQLServer({
     Post,
     Comment
   },
-  context: {
-    db,
-    pubSub,
-    prisma
+  context: (request) => {
+    return {
+      db,
+      request,
+      pubSub,
+      prisma
+    }
   }
 });
 server.start(() => console.info("Server running on 4000 port"));
