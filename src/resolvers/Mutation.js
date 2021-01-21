@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getUserId from "../utils/getUserId";
+import generateToken from "../utils/generateToken";
 
 const Mutation = {
   login: async (parent, { data }, { prisma }, info) => {
@@ -22,7 +23,7 @@ const Mutation = {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, "supercoolsecret")
+      token: generateToken(user.id)
     }
   },
   createUser: async (parent, { data }, { prisma }, info) => {
@@ -45,7 +46,7 @@ const Mutation = {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, "supercoolsecret")
+      token: generateToken(user.id)
     }
   },
   deleteUser: async (parent, { id }, { prisma, request }, info) => {
