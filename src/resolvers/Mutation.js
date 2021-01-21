@@ -2,6 +2,28 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const Mutation = {
+  login: async (parent, { data }, { prisma }, info) => {
+    const user = await prisma.query.user({
+      where: {
+        email: data.email
+      }
+    });
+
+    if (!user) {
+      throw new Error("Invalid credentials");
+    }
+
+    const isMatch = await bcrypt.compare(data.password, user.password);
+
+    if (!isMatch) {
+      throw new Error("Invalid credentials");
+    }
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, "supercoolsecret")
+    }
+  },
   createUser: async (parent, { data }, { prisma }, info) => {
     const emailTaken = await prisma.exists.User({ email: data.email });
     if (emailTaken) {
