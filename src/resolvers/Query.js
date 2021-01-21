@@ -15,14 +15,14 @@ const Query = {
       published: true
     };
   },
-  users(parent, args, { db }, info) {
-    return db.users;
+  users(parent, args, { prisma }, info) {
+    return prisma.query.users(null, info);
   },
-  posts(parent, args, { db }, info) {
-    return db.posts;
+  posts(parent, args, { prisma }, info) {
+    return prisma.query.posts(null, info);
   },
-  comments(parent, args, { db }, info) {
-    return db.comments;
+  comments(parent, args, { prisma }, info) {
+    return prisma.query.comments(null, info);
   }
 };
 
