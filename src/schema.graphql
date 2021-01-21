@@ -1,10 +1,10 @@
 type Query {
   me: User!
   post(id: ID!): Post!
-  posts: [Post!]!
-  myPosts: [Post!]!
-  users: [User!]!
-  comments: [Comment!]!
+  posts(first: Int, skip: Int, after: String): [Post!]!
+  myPosts(first: Int, skip: Int, after: String): [Post!]!
+  users(first: Int, skip: Int, after: String): [User!]!
+  comments(first: Int, skip: Int, after: String): [Comment!]!
 }
 
 type User {
