@@ -28,9 +28,9 @@ const Query = {
     }
     return posts[0];
   },
-  users(parent, { first, skip, after }, { prisma }, info) {
-    const options = { first, skip, after };
-    return prisma.query.users(options, info);
+  users(parent, args, { prisma }, info) {
+    const { first, skip, after, orderBy } = args;
+    return prisma.query.users({ first, skip, after, orderBy }, info);
   },
   posts(parent, { first, skip, after }, { prisma }, info) {
     return prisma.query.posts({
@@ -42,12 +42,15 @@ const Query = {
       }
     }, info);
   },
-  myPosts(parent, { first, skip, after }, { prisma, request }, info) {
+  myPosts(parent, args, { prisma, request }, info) {
+    const { first, skip, after, orderBy } = args;
+
     const userId = getUserId(request);
     return prisma.query.posts({
       first,
       skip,
       after,
+      orderBy,
       where: {
         author: {
           id: userId
@@ -55,9 +58,9 @@ const Query = {
       }
     }, info);
   },
-  comments(parent, { first, skip, after }, { prisma }, info) {
-    const options = { first, skip, after };
-    return prisma.query.comments(options, info);
+  comments(parent, args, { prisma }, info) {
+    const { first, skip, after, orderBy } = args;
+    return prisma.query.comments({ first, skip, after, orderBy }, info);
   }
 };
 
