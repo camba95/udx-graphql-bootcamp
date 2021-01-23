@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/camba95/udx-graphql-bootcamp#readme",
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "@babel/polyfill": "^7.12.1",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",

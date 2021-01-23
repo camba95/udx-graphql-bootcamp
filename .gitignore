@@ -6,3 +6,6 @@ docker-compose.override.yml
 
 # Build directory
 dist/
+
+# Config directory
+config/
