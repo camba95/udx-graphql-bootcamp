@@ -3,3 +3,6 @@ node_modules/
 
 # Docker compose file override
 docker-compose.override.yml
+
+# Build directory
+dist/
