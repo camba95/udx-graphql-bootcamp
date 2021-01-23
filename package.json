@@ -8,7 +8,8 @@
     "heroku-postbuild": "babel src --out-dir dist --copy-files",
     "dev": "env-cmd ./config/dev.env nodemon src/index.js --ext js,graphql --exec babel-node",
     "get-schema": "graphql get-schema -p prisma --dotenv config/dev.env",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:watch": "jest --watch",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "prisma-binding": "^2.1.1"
   },
   "devDependencies": {
+    "jest": "^23.5.0",
     "nodemon": "^2.0.7"
   }
 }
