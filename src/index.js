@@ -21,5 +21,5 @@ const server = new GraphQLServer({
 });
 
 server.start({
-  port: process.env.POST || 4000
+  port: process.env.PORT || 4000
 }, () => console.info("Server running on 4000 port"));
