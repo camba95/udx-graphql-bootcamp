@@ -1,13 +1,12 @@
 import "cross-fetch/polyfill";
-import ApolloBoost, { gql } from "apollo-boost";
+import { gql } from "apollo-boost";
 import prisma from "../src/prisma";
-import { seedDatabase } from "./utils/seedDatabase";
+import { seedDatabase, userOne } from "./utils/seedDatabase";
+import { getClient } from "./utils/getClient";
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
-const client = new ApolloBoost({
-  uri: "http://localhost:4000"
-});
+const client = getClient();
 
 beforeEach(seedDatabase);
 
@@ -94,4 +93,21 @@ test("Should not sign up user with invalid user", async () => {
   expect(
     client.mutate({ mutation: createUser })
   ).rejects.toThrow();
+});
+
+test("Should fetch user profile", async () => {
+  const client = getClient(userOne.jwt);
+  const getProfile = gql`
+    query {
+      me {
+        id
+        name
+        email
+      }
+    }
+  `;
+
+  const { data } = await client.query({ query: getProfile });
+
+  expect(data.me.id).toBe(userOne.user.id);
 });
